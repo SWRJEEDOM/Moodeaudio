@@ -14,7 +14,14 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with Jeedom. If not, see <http://www.gnu.org/licenses/>.
- */
+ *
+ * Uncomment the bolded line below in file /var/www/command/index.php
+ * sendMpdCmd($sock, $_GET['cmd']);
+ * $result = readMpdResp($sock);
+ * closeMpdSock($sock);
+ * //echo $result;
+ 
+ * http://192.168.1.55/command/?cmd=currentsong
 
 /* * ***************************Includes********************************* */
 require_once __DIR__ . '/../../../../core/php/core.inc.php';
@@ -37,12 +44,11 @@ class moodeaudio extends eqLogic
      
 
      
-     public function moodeaudio_volume_set()
+     public function moodeaudio_volume_set($volume_change)
      {
       
       log::add('moodeaudio', 'info', ' ');
       log::add('moodeaudio', 'info', ' --------INIT Moode Audio Volume set----------');
-      log::add('moodeaudio', 'info', ' --------INIT Moode Audio Volume set!!!!!!!!!!!!!!!----------');
       log::add('moodeaudio', 'info', ' ');
       
       $URL_param = $this->getConfiguration('URL_param');
@@ -53,13 +59,10 @@ class moodeaudio extends eqLogic
       
       log::add('moodeaudio', 'info', 'Api : ' . $api);
       log::add('moodeaudio', 'info', '-----COLLECTE VOLUME ----------');
-      $volknob = $this->getconfiguration('volknob');
-     //   $volume_set->setValue($volknob->getId());
-      
-      
-      log::add('moodeaudio', 'info', '*****************Volume volknob: '.$volknob);
-      log::add('moodeaudio', 'info', '*****************Volume volknob ID: '.$this->getid('volknob'));
-      $dataArray = array("cmd"=>'vol&nbsp20');
+         log::add('moodeaudio', 'info', 'Volume change : '.$volume_change);
+      $cmd_line='vol.sh '.$volume_change;
+        log::add('moodeaudio', 'info', 'Volume change cmd: '. $api."/?cmd=".$cmd_line);
+       $dataArray = array("cmd"=>$cmd_line);
       $ch = curl_init();
       $data = http_build_query($dataArray);
       $getUrl = $api."?".$data;
@@ -679,6 +682,70 @@ public function moodeaudio_collect()
  log::add('moodeaudio', 'info', ' ');
 }
 
+  
+  
+  public function moodeaudio_collect_song()
+{
+  log::add('moodeaudio', 'info', ' ');
+  log::add('moodeaudio', 'info', ' --------INIT Moode Audio plugin-----------');
+  log::add('moodeaudio', 'info', ' ');
+  
+
+  $URL_param = $this->getConfiguration('URL_param');
+  
+
+  log::add('moodeaudio', 'info', '-----SET UP----------');
+  
+  $api = "http://".$URL_param . "/command/?cmd=currentsong";
+  
+  log::add('moodeaudio', 'info', 'Api : ' . $api);
+
+
+  $json = file_get_contents($api);
+
+  log::add('moodeaudio', 'info', '-----RAW----------');
+  log::add('moodeaudio', 'info', 'RAW : ' . $json);
+  log::add('moodeaudio', 'info', '');
+    $pos_file = strpos($json,'file:');
+  	$pos_title = strpos($json,'Title:');
+    $pos_name = strpos($json,'Name:');
+      $pos_pos = strpos($json,'Pos:');
+    $pos_id = strpos($json,'Id:');
+    $pos_end=strlen ($json);
+  
+      if ($pos_name == false) {
+        $pos_name=$pos_pos;
+        $song_name='~';
+        } else {
+       $song_name=substr($json, $pos_name+5,$pos_pos-$pos_name-5);
+      }
+    
+    $song_file=substr($json, 5, $pos_title-5);
+   $song_title=substr($json, $pos_title+7, $pos_name-$pos_title-7);
+  
+   $song_pos= substr($json, $pos_pos+4,$pos_id-$pos_pos-4);
+   $song_id= substr($json, $pos_id+3,$pos_end-$pos_id-3);
+    
+ // $jsonData = json_decode($json, true);
+  log::add('moodeaudio', 'info', '-----DECODE--NEW---');
+       log::add('moodeaudio', 'info', 'File ('.$pos_file.') :'.$song_file);
+      log::add('moodeaudio', 'info', 'Title ('.$pos_title.') :'.$song_title);
+     log::add('moodeaudio', 'info', 'Name ('.$pos_name.') :'.$song_name);
+      log::add('moodeaudio', 'info', 'Pos ('.$pos_pos.') :'.$song_pos);
+      log::add('moodeaudio', 'info', 'Id ('.$pos_id.') :'.$song_id);
+    log::add('moodeaudio', 'info', 'End ('.$pos_end.') ');
+
+ 
+   $this->checkAndUpdateCmd('song_title',$song_title);
+     $this->checkAndUpdateCmd('song_name',$song_name);
+     $this->checkAndUpdateCmd('song_pos',$song_pos);
+     $this->checkAndUpdateCmd('song_id',$song_id);
+     $this->checkAndUpdateCmd('song_file',$song_file);
+    
+ log::add('moodeaudio', 'info', ' ');
+ log::add('moodeaudio', 'info', ' --------END collect_moode audio-----------');
+ log::add('moodeaudio', 'info', ' ');
+}
      /*public function cron() {
       
     
@@ -856,7 +923,18 @@ public function moodeaudio_collect()
       
       
       
-      $sessionid = $this->getCmd(null, 'sessionid');if (!is_object($sessionid)) {$sessionid = new moodeaudioCmd();$sessionid->setName(__('sessionid', __FILE__));}$sessionid->setLogicalId('sessionid');$sessionid->setEqLogic_id($this->getId());$sessionid->setIsVisible(0);$sessionid->setType('info');$sessionid->setSubType('string');$sessionid->save();
+      $sessionid = $this->getCmd(null, 'sessionid');
+      if (!is_object($sessionid)) {
+        $sessionid = new moodeaudioCmd();
+        $sessionid->setName(__('sessionid', __FILE__));
+                                  }
+      $sessionid->setLogicalId('sessionid');
+      $sessionid->setEqLogic_id($this->getId());
+      $sessionid->setIsVisible(0);
+      $sessionid->setType('info');
+      $sessionid->setSubType('string');
+      $sessionid->save();
+      
       $timezone = $this->getCmd(null, 'timezone');if (!is_object($timezone)) {$timezone = new moodeaudioCmd();$timezone->setName(__('timezone', __FILE__));}$timezone->setLogicalId('timezone');$timezone->setEqLogic_id($this->getId());$timezone->setIsVisible(0);$timezone->setType('info');$timezone->setSubType('string');$timezone->save();
       $i2sdevice = $this->getCmd(null, 'i2sdevice');if (!is_object($i2sdevice)) {$i2sdevice = new moodeaudioCmd();$i2sdevice->setName(__('i2sdevice', __FILE__));}$i2sdevice->setLogicalId('i2sdevice');$i2sdevice->setEqLogic_id($this->getId());$i2sdevice->setIsVisible(0);$i2sdevice->setType('info');$i2sdevice->setSubType('string');$i2sdevice->save();
       $hostname = $this->getCmd(null, 'hostname');if (!is_object($hostname)) {$hostname = new moodeaudioCmd();$hostname->setName(__('hostname', __FILE__));}$hostname->setLogicalId('hostname');$hostname->setEqLogic_id($this->getId());$hostname->setIsVisible(0);$hostname->setType('info');$hostname->setSubType('string');$hostname->save();
@@ -1009,8 +1087,17 @@ public function moodeaudio_collect()
       $ipaddress = $this->getCmd(null, 'ipaddress');if (!is_object($ipaddress)) {$ipaddress = new moodeaudioCmd();$ipaddress->setName(__('ipaddress', __FILE__));}$ipaddress->setLogicalId('ipaddress');$ipaddress->setEqLogic_id($this->getId());$ipaddress->setIsVisible(0);$ipaddress->setType('info');$ipaddress->setSubType('string');$ipaddress->save();
       $bgimage = $this->getCmd(null, 'bgimage');if (!is_object($bgimage)) {$bgimage = new moodeaudioCmd();$bgimage->setName(__('bgimage', __FILE__));}$bgimage->setLogicalId('bgimage');$bgimage->setEqLogic_id($this->getId());$bgimage->setIsVisible(0);$bgimage->setType('info');$bgimage->setSubType('string');$bgimage->save();
       
+      
+           
+      $song_title = $this->getCmd(null, 'song_title');if (!is_object($song_title)) {$song_title = new moodeaudioCmd();$song_title->setName(__('song title', __FILE__));}$song_title->setLogicalId('song_title');$song_title->setEqLogic_id($this->getId());$song_title->setIsVisible(1);$song_title->setType('info');$song_title->setSubType('string');$song_title->save();
+$song_name = $this->getCmd(null, 'song_name');if (!is_object($song_name)) {$song_name = new moodeaudioCmd();$song_name->setName(__('song name', __FILE__));}$song_name->setLogicalId('song_name');$song_name->setEqLogic_id($this->getId());$song_name->setIsVisible(1);$song_name->setType('info');$song_name->setSubType('string');$song_name->save();
+$song_pos = $this->getCmd(null, 'song_pos');if (!is_object($song_pos)) {$song_pos = new moodeaudioCmd();$song_pos->setName(__('song pos', __FILE__));}$song_pos->setLogicalId('song_pos');$song_pos->setEqLogic_id($this->getId());$song_pos->setIsVisible(1);$song_pos->setType('info');$song_pos->setSubType('string');$song_pos->save();
+$song_id = $this->getCmd(null, 'song_id');if (!is_object($song_id)) {$song_id = new moodeaudioCmd();$song_id->setName(__('song id', __FILE__));}$song_id->setLogicalId('song_id');$song_id->setEqLogic_id($this->getId());$song_id->setIsVisible(1);$song_id->setType('info');$song_id->setSubType('string');$song_id->save();
+      $song_file = $this->getCmd(null, 'song_file');if (!is_object($song_file)) {$song_file = new moodeaudioCmd();$song_file->setName(__('song_file', __FILE__));}$song_file->setLogicalId('song_file');$song_file->setEqLogic_id($this->getId());$song_file->setIsVisible(1);$song_file->setType('info');$song_file->setSubType('string');$song_file->save();
+      
       $volume_set = $this->getCmd(null, 'volume_set');       
-      if (!is_object($volume_set)) {
+      if (!is_object($volume_set)) 
+      {
         $volume_set = new moodeaudioCmd();
         $volume_set->setLogicalId('volume_set');
         $volume_set->setIsVisible(1);
@@ -1036,6 +1123,7 @@ public function moodeaudio_collect()
       if (!is_object($refresh)) {
        $refresh = new moodeaudioCmd();
        $refresh->setOrder(7);
+        //   $refresh_song->setDisplay('icon', '<i class="fas jeedomapp-reload"></i>');
        $refresh->setName(__('Rafraichir', __FILE__));
      }
      $refresh->setEqLogic_id($this->getId());
@@ -1043,6 +1131,20 @@ public function moodeaudio_collect()
      $refresh->setType('action');
      $refresh->setSubType('other');
      $refresh->save();
+      
+      $refresh_song = $this->getCmd(null, 'refresh_song');
+      if (!is_object($refresh_song)) {
+       $refresh_song = new moodeaudioCmd();
+           $refresh_song->setIsVisible(1);
+       $refresh_song->setOrder(8);
+       $refresh_song->setDisplay('icon', '<i class="fas jeedomapp-reload"></i>');
+       $refresh_song->setName(__('Rafraichir song', __FILE__));
+     }
+     $refresh_song->setEqLogic_id($this->getId());
+     $refresh_song->setLogicalId('refresh_song');
+     $refresh_song->setType('action');
+     $refresh_song->setSubType('other');
+     $refresh_song->save();
    }
 
     // Fonction exécutée automatiquement avant la suppression de l'équipement 
@@ -1136,13 +1238,18 @@ public function moodeaudio_collect()
           
           case 'mute':
           $eqlogic->moodeaudio_mute();
-          
+          break;
+            
+          case 'refresh_song':
+          $eqlogic->moodeaudio_collect_song();
           break;
           
           case 'volume_set':
-          $eqlogic->moodeaudio_volume_set();
-          
-          break;
+            
+             $volume_change = $_options['slider'];
+                 log::add('moodeaudio', 'info', ' Volume_set changed'.$volume_change);
+            $eqlogic->moodeaudio_volume_set($volume_change);
+          break; 
         }
       }
     }
