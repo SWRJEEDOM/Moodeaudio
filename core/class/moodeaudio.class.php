@@ -715,13 +715,22 @@ public function moodeaudio_collect()
   
       if ($pos_name == false) {
         $pos_name=$pos_pos;
-        $song_name='~';
-        } else {
+        $song_name='';
+        $song_temp=substr($json, $pos_title+7, $pos_name-$pos_title-7);
+        $pos_temp = strpos($song_temp,'-');
+        log::add('moodeaudio', 'info', 'Temp ('.$pos_temp.') :'.$song_temp);
+       $song_name=substr($song_temp,0,$pos_temp);
+       $song_title=substr($song_temp,$pos_temp+1,$pos_pos-1);
+     log::add('moodeaudio', 'info', 'Title_temp ('.$pos_title.') :'.$song_title);
+     log::add('moodeaudio', 'info', 'Name_temp ('.$pos_name.') :'.$song_name);
+  
+      } else {
        $song_name=substr($json, $pos_name+5,$pos_pos-$pos_name-5);
+       $song_title=substr($json, $pos_title+7, $pos_name-$pos_title-7);
       }
     
     $song_file=substr($json, 5, $pos_title-5);
-   $song_title=substr($json, $pos_title+7, $pos_name-$pos_title-7);
+  
   
    $song_pos= substr($json, $pos_pos+4,$pos_id-$pos_pos-4);
    $song_id= substr($json, $pos_id+3,$pos_end-$pos_id-3);
@@ -1091,7 +1100,7 @@ public function moodeaudio_collect()
            
       $song_title = $this->getCmd(null, 'song_title');if (!is_object($song_title)) {$song_title = new moodeaudioCmd();$song_title->setName(__('song title', __FILE__));}$song_title->setLogicalId('song_title');$song_title->setEqLogic_id($this->getId());$song_title->setIsVisible(1);$song_title->setType('info');$song_title->setSubType('string');$song_title->save();
 $song_name = $this->getCmd(null, 'song_name');if (!is_object($song_name)) {$song_name = new moodeaudioCmd();$song_name->setName(__('song name', __FILE__));}$song_name->setLogicalId('song_name');$song_name->setEqLogic_id($this->getId());$song_name->setIsVisible(1);$song_name->setType('info');$song_name->setSubType('string');$song_name->save();
-$song_pos = $this->getCmd(null, 'song_pos');if (!is_object($song_pos)) {$song_pos = new moodeaudioCmd();$song_pos->setName(__('song pos', __FILE__));}$song_pos->setLogicalId('song_pos');$song_pos->setEqLogic_id($this->getId());$song_pos->setIsVisible(1);$song_pos->setType('info');$song_pos->setSubType('string');$song_pos->save();
+$song_pos = $this->getCmd(null, 'song_pos');if (!is_object($song_pos)) {$song_pos = new moodeaudioCmd();$song_pos->setName(__('song pos', __FILE__));}$song_pos->setLogicalId('song_pos');$song_pos->setEqLogic_id($this->getId());$song_pos->setIsVisible(0);$song_pos->setType('info');$song_pos->setSubType('string');$song_pos->save();
 $song_id = $this->getCmd(null, 'song_id');if (!is_object($song_id)) {$song_id = new moodeaudioCmd();$song_id->setName(__('song id', __FILE__));}$song_id->setLogicalId('song_id');$song_id->setEqLogic_id($this->getId());$song_id->setIsVisible(1);$song_id->setType('info');$song_id->setSubType('string');$song_id->save();
       $song_file = $this->getCmd(null, 'song_file');if (!is_object($song_file)) {$song_file = new moodeaudioCmd();$song_file->setName(__('song_file', __FILE__));}$song_file->setLogicalId('song_file');$song_file->setEqLogic_id($this->getId());$song_file->setIsVisible(1);$song_file->setType('info');$song_file->setSubType('string');$song_file->save();
       
@@ -1145,6 +1154,21 @@ $song_id = $this->getCmd(null, 'song_id');if (!is_object($song_id)) {$song_id = 
      $refresh_song->setType('action');
      $refresh_song->setSubType('other');
      $refresh_song->save();
+      
+      
+       $refresh_config = $this->getCmd(null, 'refresh_config');
+      if (!is_object($refresh_config)) {
+       $refresh_config = new moodeaudioCmd();
+           $refresh_config->setIsVisible(1);
+       $refresh_config->setOrder(9);
+       $refresh_config->setDisplay('icon', '<i class="fas fa-spinner"></i>');
+       $refresh_config->setName(__('Rafraichir config', __FILE__));
+     }
+     $refresh_config->setEqLogic_id($this->getId());
+     $refresh_config->setLogicalId('refresh_config');
+     $refresh_config->setType('action');
+     $refresh_config->setSubType('other');
+     $refresh_config->save();
    }
 
     // Fonction exécutée automatiquement avant la suppression de l'équipement 
@@ -1212,6 +1236,12 @@ $song_id = $this->getCmd(null, 'song_id');if (!is_object($song_id)) {$song_id = 
         $eqlogic = $this->getEqLogic(); //récupère l'éqlogic de la commande $this
         switch ($this->getLogicalId()) {
           case 'refresh': 
+          
+          
+          
+          break;
+            
+             case 'refresh_config': 
           
           $eqlogic->moodeaudio_collect();
           
