@@ -66,8 +66,8 @@ $eqLogics = eqLogic::byType($plugin->getId());
 			<li role="presentation"><a href="#" class="eqLogicAction" aria-controls="home" role="tab" data-toggle="tab" data-action="returnToThumbnailDisplay"><i class="fas fa-arrow-circle-left"></i></a></li>
 			<li role="presentation" class="active"><a href="#eqlogictab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-tachometer-alt"></i><span class="hidden-xs"> {{Équipement}}</span></a></li>
 			<li role="presentation"><a href="#commandtab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-list"></i><span class="hidden-xs"> {{Commandes}}</span></a></li>
-            <li role="presentation"><a href="#infotab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-music"></i><span class="hidden-xs"> {{Info}}</span></a></li>
-            <li role="presentation"><a href="#ostab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-cog"></i><span class="hidden-xs"> {{OS}}</span></a></li>
+			<li role="presentation"><a href="#infotab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-music"></i><span class="hidden-xs"> {{Info}}</span></a></li>
+			<li role="presentation"><a href="#ostab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-cog"></i><span class="hidden-xs"> {{OS}}</span></a></li>
 		</ul>
 		<div class="tab-content">
 			<!-- Onglet de configuration de l'équipement -->
@@ -120,125 +120,123 @@ $eqLogics = eqLogic::byType($plugin->getId());
 								</div>
 							</div>
 							<br>
+							<legend><i class="fas fa-cogs"></i> {{PLAYER}}</player>
 
-							<legend><i class="fas fa-cogs"></i> {{URL}}</legend>
-							<div class="form-group">
-								<label class="col-sm-3 control-label">{{URL Moode Audio}}</label>
-								<div class="col-sm-7">
-									<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="URL_param" placeholder="{{192.168.1.x}}"/>
+								<div class="form-group">
+									<label class="col-sm-3 control-label"> {{Type de player}}</label>
+									<div class="col-sm-7">
+										<select class="eqLogicAttr form-control"data-l1key="configuration" data-l2key="measure_type">
+											<option value="MoodeAudio">{{MoodeAudio}}</option>
+											<option value="Volumio">{{Volumio not yet!}}</option>
+											
+										</select>
+									</div>
 								</div>
+
+
+								<legend><i class="fas fa-cogs"></i> {{URL}}</legend>
+								<div class="form-group">
+									<label class="col-sm-3 control-label">{{URL Moode Audio}}</label>
+									<div class="col-sm-7">
+										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="URL_param" placeholder="{{192.168.1.x}}"/>
+									</div>
+								</div>
+
+								
+								<!-- Champ de saisie du cron d'auto-actualisation + assistant cron -->
+								<!-- La fonction cron de la classe du plugin doit contenir le code prévu pour que ce champ soit fonctionnel -->
+								
+								
 							</div>
 
-							
-							<!-- Champ de saisie du cron d'auto-actualisation + assistant cron -->
-							<!-- La fonction cron de la classe du plugin doit contenir le code prévu pour que ce champ soit fonctionnel -->
-							
-							<!div class="form-group">
-								<!label class="col-sm-3 control-label">{{Auto-actualisation}}
-									<!sup><!i class="fas fa-question-circle tooltips" title="{{Fréquence de rafraîchissement de l'équipement}}"><!/i><!/sup>
-								<!/label>
-								<!div class="col-sm-7">
-									<!div class="input-group">
-										<!input type="text" class="eqLogicAttr form-control roundedLeft" data-l1key="configuration" data-l2key="autorefresh" placeholder="{{Cliquer sur ? pour afficher l'assistant cron}}"/>
-										<!span class="input-group-btn">
-											<!a class="btn btn-default cursor jeeHelper roundedRight" data-helper="cron" title="Assistant cron">
-												<!i class="fas fa-question-circle"><!/i>
-											<!/a>
-										<!/span>
-									<!/div>
-								<!/div>
-							<!/div>
-							
-						</div>
-
-						<!-- Partie droite de l'onglet "Équipement" -->
-						<!-- Affiche l'icône du plugin par défaut mais vous pouvez y afficher les informations de votre choix -->
-						<div class="col-lg-5">
-							<legend><i class="fas fa-info"></i> {{Informations}}</legend>
-							<div class="form-group">
-								<div class="text-center">
-									<img name="icon_visu" src="<?= $plugin->getPathImgIcon(); ?>" style="max-width:160px;"/>
+							<!-- Partie droite de l'onglet "Équipement" -->
+							<!-- Affiche l'icône du plugin par défaut mais vous pouvez y afficher les informations de votre choix -->
+							<div class="col-lg-5">
+								<legend><i class="fas fa-info"></i> {{Informations}}</legend>
+								<div class="form-group">
+									<div class="text-center">
+										<img name="icon_visu" src="<?= $plugin->getPathImgIcon(); ?>" style="max-width:160px;"/>
+									</div>
 								</div>
 							</div>
-						</div>
-					</fieldset>
-				</form>
-				<hr>
-			</div><!-- /.tabpanel #eqlogictab-->
+						</fieldset>
+					</form>
+					<hr>
+				</div><!-- /.tabpanel #eqlogictab-->
 
-			<!-- Onglet des commandes de l'équipement -->
-			<div role="tabpanel" class="tab-pane" id="commandtab">
-				<a class="btn btn-default btn-sm pull-right cmdAction" data-action="add" style="margin-top:5px;"><i class="fas fa-plus-circle"></i> {{Ajouter une commande}}</a>
-				<br/><br/>
-				<div class="table-responsive">
-					<table id="table_cmd" class="table table-bordered table-condensed">
-						<thead>
-							<tr>
-								<th>{{Id}}</th>
-								<th>{{Nom}}</th>
-								<th>{{Type}}</th>
-								<th>{{Options}}</th>
-								<th>{{Paramètres}}</th>
-								<th>{{Action}}</th>
-							</tr>
-						</thead>
-						<tbody>
-						</tbody>
-					</table>
-				</div>
-			</div><!-- /.tabpanel #commandtab-->
-            
-            <!-- Onglet des commandes de l'équipement -->
-			<div role="tabpanel" class="tab-pane" id="infotab">
-				<a class="btn btn-default btn-sm pull-right cmdAction" data-action="add" style="margin-top:5px;"><i class="fas fa-plus-circle"></i> {{Ajouter une commande}}</a>
-				<br/><br/>
-				<div class="table-responsive">
-					<table id="table_info" class="table table-bordered table-condensed">
-						<thead>
-							<tr>
-								<th>{{Id}}</th>
-								<th>{{Nom}}</th>
-								<th>{{Type}}</th>
-								<th>{{Options}}</th>
-								<th>{{Paramètres}}</th>
-								<th>{{Action}}</th>
-							</tr>
-						</thead>
-						<tbody>
-						</tbody>
-					</table>
-				</div>
-			</div><!-- /.tabpanel #infotab-->
-            
-             <!-- Onglet des commandes de l'équipement -->
-			<div role="tabpanel" class="tab-pane" id="ostab">
-				<a class="btn btn-default btn-sm pull-right cmdAction" data-action="add" style="margin-top:5px;"><i class="fas fa-plus-circle"></i> {{Ajouter une commande}}</a>
-				<br/><br/>
-				<div class="table-responsive">
-					<table id="table_os" class="table table-bordered table-condensed">
-						<thead>
-							<tr>
-								<th>{{Id}}</th>
-								<th>{{Nom}}</th>
-								<th>{{Type}}</th>
-								<th>{{Options}}</th>
-								<th>{{Paramètres}}</th>
-								<th>{{Action}}</th>
-							</tr>
-						</thead>
-						<tbody>
-						</tbody>
-					</table>
-				</div>
-			</div><!-- /.tabpanel #ostab-->
-            
-            
+				<!-- Onglet des commandes de l'équipement -->
+				<div role="tabpanel" class="tab-pane" id="commandtab">
+					<a class="btn btn-default btn-sm pull-right cmdAction" data-action="add" style="margin-top:5px;"><i class="fas fa-plus-circle"></i> {{Ajouter une commande}}</a>
+					<br/><br/>
+					<div class="table-responsive">
+						<table id="table_cmd" class="table table-bordered table-condensed">
+							<thead>
+								<tr>
+									<th>{{Id}}</th>
+									<th>{{Nom}}</th>
+									<th>{{Type}}</th>
+									<th>{{Options}}</th>
+									<th>{{Paramètres}}</th>
+									<th>{{Action}}</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+					</div>
+				</div><!-- /.tabpanel #commandtab-->
+				
+				<!-- Onglet des commandes de l'équipement -->
+				<div role="tabpanel" class="tab-pane" id="infotab">
+					<a class="btn btn-default btn-sm pull-right cmdAction" data-action="add" style="margin-top:5px;"><i class="fas fa-plus-circle"></i> {{Ajouter une commande}}</a>
+					<br/><br/>
+					<div class="table-responsive">
+						<table id="table_info" class="table table-bordered table-condensed">
+							<thead>
+								<tr>
+									<th>{{Id}}</th>
+									<th>{{Nom}}</th>
+									<th>{{Type}}</th>
+									<th>{{Options}}</th>
+									<th>{{Paramètres}}</th>
+									<th>{{Action}}</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+					</div>
+				</div><!-- /.tabpanel #infotab-->
+				
+				<!-- Onglet des commandes de l'équipement -->
+				<div role="tabpanel" class="tab-pane" id="ostab">
+					<a class="btn btn-default btn-sm pull-right cmdAction" data-action="add" style="margin-top:5px;"><i class="fas fa-plus-circle"></i> {{Ajouter une commande}}</a>
+					<br/><br/>
+					<div class="table-responsive">
+						<table id="table_os" class="table table-bordered table-condensed">
+							<thead>
+								<tr>
+									<th>{{Id}}</th>
+									<th>{{Nom}}</th>
+									<th>{{Type}}</th>
+									<th>{{Options}}</th>
+									<th>{{Paramètres}}</th>
+									<th>{{Action}}</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+					</div>
+				</div><!-- /.tabpanel #ostab-->
+				
+				
 
-		</div><!-- /.tab-content -->
-	</div><!-- /.eqLogic -->
-</div><!-- /.row row-overflow -->
+			</div><!-- /.tab-content -->
+		</div><!-- /.eqLogic -->
+	</div><!-- /.row row-overflow -->
 
-<!-- Inclusion du fichier javascript du plugin (dossier, nom_du_fichier, extension_du_fichier, id_du_plugin) -->
-<?php include_file('desktop', 'moodeaudio', 'js', 'moodeaudio');?>
-<!-- Inclusion du fichier javascript du core - NE PAS MODIFIER NI SUPPRIMER -->
-<?php include_file('core', 'plugin.template', 'js');?>
+	<!-- Inclusion du fichier javascript du plugin (dossier, nom_du_fichier, extension_du_fichier, id_du_plugin) -->
+	<?php include_file('desktop', 'moodeaudio', 'js', 'moodeaudio');?>
+	<!-- Inclusion du fichier javascript du core - NE PAS MODIFIER NI SUPPRIMER -->
+	<?php include_file('core', 'plugin.template', 'js');?>
