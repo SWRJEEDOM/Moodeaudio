@@ -755,10 +755,12 @@ public function moodeaudio_collect_song()
 	log::add('moodeaudio', 'info', ' --------END collect_moode audio-----------');
 	log::add('moodeaudio', 'info', ' ');
 }
-     /*public function cron() {
-      
+     public function cron() {
+      foreach (eqLogic::byType(__CLASS__, true) as $eqLogic) {  // pour tous les équipements actifs de la classe moodeaudio
+      $eqLogic->moodeaudio_collect_song();
+    }
     
-     }*/
+     }
 
     /*
      * Fonction exécutée automatiquement toutes les 5 minutes par Jeedom
@@ -790,11 +792,14 @@ public function moodeaudio_collect_song()
 //}
 
 
-    /*
-     * Fonction exécutée automatiquement toutes les heures par Jeedom
+   
+     // Fonction exécutée automatiquement toutes les heures par Jeedom
      public static function cronHourly() {
+  foreach (eqLogic::byType(__CLASS__, true) as $eqLogic) {  // pour tous les équipements actifs de la classe moodeaudio
+      $eqLogic->moodeaudio_collect();
+    }
      }
-     */
+     
 
     /*
      * Fonction exécutée automatiquement tous les jours par Jeedom

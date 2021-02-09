@@ -85,3 +85,10 @@ function addCmdToTable(_cmd) {
      }
    });
  }
+$('.eqLogicAttr[data-l1key=configuration][data-l2key=measure_type]').on('change',function(){
+    if($(this).value()=='MoodeAudio') {
+        $('.moodaudiourl').show();
+    } else {
+        $('.moodaudiourl').hide();
+    }
+});

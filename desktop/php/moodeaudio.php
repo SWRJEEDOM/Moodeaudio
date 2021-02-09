@@ -66,8 +66,6 @@ $eqLogics = eqLogic::byType($plugin->getId());
 			<li role="presentation"><a href="#" class="eqLogicAction" aria-controls="home" role="tab" data-toggle="tab" data-action="returnToThumbnailDisplay"><i class="fas fa-arrow-circle-left"></i></a></li>
 			<li role="presentation" class="active"><a href="#eqlogictab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-tachometer-alt"></i><span class="hidden-xs"> {{Équipement}}</span></a></li>
 			<li role="presentation"><a href="#commandtab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-list"></i><span class="hidden-xs"> {{Commandes}}</span></a></li>
-			<li role="presentation"><a href="#infotab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-music"></i><span class="hidden-xs"> {{Info}}</span></a></li>
-			<li role="presentation"><a href="#ostab" aria-controls="home" role="tab" data-toggle="tab"><i class="fas fa-cog"></i><span class="hidden-xs"> {{OS}}</span></a></li>
 		</ul>
 		<div class="tab-content">
 			<!-- Onglet de configuration de l'équipement -->
@@ -135,7 +133,7 @@ $eqLogics = eqLogic::byType($plugin->getId());
 
 
 								<legend><i class="fas fa-cogs"></i> {{URL}}</legend>
-								<div class="form-group">
+								<div class="moodaudiourl">
 									<label class="col-sm-3 control-label">{{URL Moode Audio}}</label>
 									<div class="col-sm-7">
 										<input type="text" class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="URL_param" placeholder="{{192.168.1.x}}"/>
