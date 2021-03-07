@@ -1,5 +1,6 @@
 # Template de plugin pour Jeedom
 
+
 Ce "template de plugin" sert de base à la réalisation de plugins pour **Jeedom**.
 
 La documentation générale relative à la conception de plugin est consultable [ici](https://doc.jeedom.com/fr_FR/dev/). Dans le détail :   
@@ -8,4 +9,7 @@ La documentation générale relative à la conception de plugin est consultable 
 * [Icône du plugin](https://doc.jeedom.com/fr_FR/dev/Icone_de_plugin) : Afin de pouvoir être publié sur le Market Jeedom, tout plugin doit disposer d’une icône. Attention à ne pas utiliser le même code couleur que les icônes des plugins Jeedom officiels.
 * [Widget du plugin](https://doc.jeedom.com/fr_FR/dev/widget_plugin) : Présentation des différentes manières d'inclure des widgets personnalisés au plugin.
 * [Documentation du plugin](https://doc.jeedom.com/fr_FR/dev/documentation_plugin) : Présentation de la mise en place d'une documentation car un bon plugin n'est rien sans documentation adéquate.
+Exemple d'intégration d'un flux (exemple France inter)
+![image](https://user-images.githubusercontent.com/30535355/110249505-a077b400-7f76-11eb-9e79-8720a7599348.png)
+
 * [Publication du plugin](https://doc.jeedom.com/fr_FR/dev/publication_plugin) : Description des pré-requis indispensables à la publication du plugin.
