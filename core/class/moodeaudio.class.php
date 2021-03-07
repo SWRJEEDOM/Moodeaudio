@@ -93,7 +93,7 @@ class moodeaudio extends eqLogic
      {
      	
      	log::add('moodeaudio', 'info', ' ');
-     	log::add('moodeaudio', 'info', ' --------INIT Moode Audio Stop-----------');
+     	log::add('moodeaudio', 'info', ' --------INIT Moode Audio -----------');
      	log::add('moodeaudio', 'info', ' ');
      	
      	$URL_param = $this->getConfiguration('URL_param');
@@ -103,7 +103,7 @@ class moodeaudio extends eqLogic
      	$api = "http://".$URL_param."/command";
      	
      	log::add('moodeaudio', 'info', 'Api : ' . $api);
-     	log::add('moodeaudio', 'info', '-----EXECUTION STOP COMMAND ----------');
+     	log::add('moodeaudio', 'info', '-----EXECUTION MUTE COMMAND ----------');
      	
 
      	$dataArray = array("cmd"=>'mute');
@@ -132,11 +132,12 @@ class moodeaudio extends eqLogic
      	
      }
      
-     public function moodeaudio_volume_up()
+    
+     public function moodeaudio_clear_playlist()
      {
      	
      	log::add('moodeaudio', 'info', ' ');
-     	log::add('moodeaudio', 'info', ' --------INIT Moode Audio Stop-----------');
+     	log::add('moodeaudio', 'info', ' --------INIT Moode Audio -----------');
      	log::add('moodeaudio', 'info', ' ');
      	
      	$URL_param = $this->getConfiguration('URL_param');
@@ -146,7 +147,50 @@ class moodeaudio extends eqLogic
      	$api = "http://".$URL_param."/command";
      	
      	log::add('moodeaudio', 'info', 'Api : ' . $api);
-     	log::add('moodeaudio', 'info', '-----EXECUTION STOP COMMAND ----------');
+     	log::add('moodeaudio', 'info', '-----EXECUTION CLEAR PLAYLIST COMMAND ----------');
+     	
+
+     	$dataArray = array("cmd"=>'clear');
+     	$ch = curl_init();
+     	$data = http_build_query($dataArray);
+     	$getUrl = $api."?".$data;
+     	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+     	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+     	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+     	curl_setopt($ch, CURLOPT_URL, $getUrl);
+     	curl_setopt($ch, CURLOPT_TIMEOUT, 80);
+     	
+     	$response = curl_exec($ch);
+     	
+     	if(curl_error($ch)){
+     		
+     		log::add('moodeaudio', 'info', 'Request Error:' . curl_error($ch));
+     	}
+     	else
+     	{
+     		log::add('moodeaudio', 'info', 'URL:' . $getUrl);
+     		log::add('moodeaudio', 'info', 'Success:' . $response);
+     		
+     	}
+     	curl_close($ch);
+     	
+     }
+  
+     public function moodeaudio_volume_up()
+     {
+     	
+     	log::add('moodeaudio', 'info', ' ');
+     	log::add('moodeaudio', 'info', ' --------INIT Moode Audio -----------');
+     	log::add('moodeaudio', 'info', ' ');
+     	
+     	$URL_param = $this->getConfiguration('URL_param');
+     	
+     	log::add('moodeaudio', 'info', '-----SET UP URL----------');
+     	
+     	$api = "http://".$URL_param."/command";
+     	
+     	log::add('moodeaudio', 'info', 'Api : ' . $api);
+     	log::add('moodeaudio', 'info', '-----EXECUTION VOLUME UP COMMAND ----------');
      	
 
      	$dataArray = array("cmd"=>'vol.sh up 10');
@@ -181,7 +225,7 @@ class moodeaudio extends eqLogic
      {
      	
      	log::add('moodeaudio', 'info', ' ');
-     	log::add('moodeaudio', 'info', ' --------INIT Moode Audio Stop-----------');
+     	log::add('moodeaudio', 'info', ' --------INIT Moode Audio -----------');
      	log::add('moodeaudio', 'info', ' ');
      	
      	$URL_param = $this->getConfiguration('URL_param');
@@ -191,7 +235,7 @@ class moodeaudio extends eqLogic
      	$api = "http://".$URL_param."/command";
      	
      	log::add('moodeaudio', 'info', 'Api : ' . $api);
-     	log::add('moodeaudio', 'info', '-----EXECUTION STOP COMMAND ----------');
+     	log::add('moodeaudio', 'info', '-----EXECUTION VOLUME DOWN COMMAND ----------');
      	
 
      	$dataArray = array("cmd"=>'vol.sh dn 10');
@@ -227,7 +271,7 @@ class moodeaudio extends eqLogic
      {
      	
      	log::add('moodeaudio', 'info', ' ');
-     	log::add('moodeaudio', 'info', ' --------INIT Moode Audio Stop-----------');
+     	log::add('moodeaudio', 'info', ' --------INIT Moode Audio -----------');
      	log::add('moodeaudio', 'info', ' ');
      	
      	$URL_param = $this->getConfiguration('URL_param');
@@ -237,13 +281,63 @@ class moodeaudio extends eqLogic
      	$api = "http://".$URL_param."/command";
      	
      	log::add('moodeaudio', 'info', 'Api : ' . $api);
-     	log::add('moodeaudio', 'info', '-----EXECUTION STOP COMMAND ----------');
+     	log::add('moodeaudio', 'info', '-----EXECUTION PLAY COMMAND ----------');
      	
 
      	$dataArray = array("cmd"=>'play');
      	$ch = curl_init();
      	$data = http_build_query($dataArray);
      	$getUrl = $api."?".$data;
+     	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+     	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+     	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+     	curl_setopt($ch, CURLOPT_URL, $getUrl);
+     	curl_setopt($ch, CURLOPT_TIMEOUT, 80);
+     	
+     	$response = curl_exec($ch);
+     	
+     	if(curl_error($ch)){
+     		
+     		log::add('moodeaudio', 'info', 'Request Error:' . curl_error($ch));
+     	}
+     	else
+     	{
+     		log::add('moodeaudio', 'info', 'URL:' . $getUrl);
+     		log::add('moodeaudio', 'info', 'Success:' . $response);
+     		
+     	}
+     	
+     	curl_close($ch);
+     	
+     }
+  
+  
+    public function moodeaudio_radio_set($message)
+     {
+     	
+     	log::add('moodeaudio', 'info', ' ');
+     	log::add('moodeaudio', 'info', ' --------INIT Moode Audio -----------');
+     	log::add('moodeaudio', 'info', ' ');
+     	
+     	$URL_param = $this->getConfiguration('URL_param');
+     	
+     	log::add('moodeaudio', 'info', '-----SET UP URL----------');
+     	
+     	$api = "http://".$URL_param."/command";
+     	
+     	log::add('moodeaudio', 'info', 'Api : ' . $api);
+     	log::add('moodeaudio', 'info', '-----EXECUTION ADD COMMAND ----------');
+     	
+	   
+     
+        log::add('moodeaudio', 'info', 'URL_radio : ' . $message);
+      
+      
+     	$dataArray = array("cmd"=>'add');
+     	$ch = curl_init();
+     	$data = http_build_query($dataArray);
+     	$getUrl = $api."?".$data." ".$message;
+       log::add('moodeaudio', 'info', 'URL_complet : ' . $getUrl);
      	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
      	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
      	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
@@ -1175,6 +1269,36 @@ public function moodeaudio_collect_song()
      	$refresh_config->setType('action');
      	$refresh_config->setSubType('other');
      	$refresh_config->save();
+       
+       $refresh_config = $this->getCmd(null, 'clear_playlist');
+     	if (!is_object($refresh_config)) {
+     		$refresh_config = new moodeaudioCmd();
+     		$refresh_config->setIsVisible(1);
+     		$refresh_config->setOrder(10);
+     		$refresh_config->setDisplay('icon', '<i class="fas fa-eraser"></i>');
+     		$refresh_config->setName(__('Clear playlist', __FILE__));
+     	}
+     	$refresh_config->setEqLogic_id($this->getId());
+     	$refresh_config->setLogicalId('clear_playlist');
+     	$refresh_config->setType('action');
+     	$refresh_config->setSubType('other');
+     	$refresh_config->save();
+       
+       
+         $refresh_config = $this->getCmd(null, 'radio_set');
+        if (!is_object($refresh_config)) {
+            $refresh_config = new moodeaudioCmd();
+            $refresh_config->setIsVisible(1);
+            $refresh_config->setOrder(11);
+         $refresh_config->setDisplay('icon', '<i class="fas fa-link"></i>');
+            $refresh_config->setName(__('Radio', __FILE__));
+        }
+        $refresh_config->setEqLogic_id($this->getId());
+     	$refresh_config->setLogicalId('radio_set');
+        $refresh_config->setType('action');
+        $refresh_config->setSubType('message');
+        $refresh_config->save();
+       
      }
 
     // Fonction exécutée automatiquement avant la suppression de l'équipement 
@@ -1276,14 +1400,27 @@ public function moodeaudio_collect_song()
         	$eqlogic->moodeaudio_mute();
         	break;
         	
+            case 'clear_playlist':
+        	$eqlogic->moodeaudio_clear_playlist();
+        	break;
+            
         	case 'refresh_song':
         	$eqlogic->moodeaudio_collect_song();
+        	break;
+            
+            case 'radio_set':
+             $message = rawurlencode($_options['message']);
+             $message = str_replace("%3A", ":", $message);
+        $message = str_replace("%2F", "/", $message);
+     
+            log::add('moodeaudio', 'info', 'URL Message : '.$message);
+           	$eqlogic->moodeaudio_radio_set($message);
         	break;
         	
         	case 'volume_set':
         	
         	$volume_change = $_options['slider'];
-        	log::add('moodeaudio', 'info', ' Volume_set changed'.$volume_change);
+        	log::add('moodeaudio', 'info', 'Volume_set changed'.$volume_change);
         	$eqlogic->moodeaudio_volume_set($volume_change);
         	break; 
         }
